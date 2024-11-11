@@ -1,5 +1,27 @@
 spring:
   application:
     name: ai-data-crawler
+  ai:
+    embedding:
+      transformer:
+        onnx:
+          model-uri: https://huggingface.co/intfloat/e5-small-v2/resolve/main/model.onnx
+        tokenizer:
+          uri: https://huggingface.co/intfloat/e5-small-v2/raw/main/tokenizer.json
+    vectorstore:
+      # todo: store externally
+      milvus:
+        client:
+          host: "localhost"
+          port: 19530
+          username: "root"
+          password: "milvus"
+        databaseName: "default"
+        collectionName: "vector_store"
+        embeddingDimension: 384
+        indexType: IVF_FLAT
+        metricType: COSINE
+        initialize-schema: true
 server:
   port: 8080
+
