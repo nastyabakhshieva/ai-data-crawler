@@ -5,23 +5,27 @@ spring:
     embedding:
       transformer:
         onnx:
-          model-uri: https://huggingface.co/intfloat/e5-small-v2/resolve/main/model.onnx
+          model-uri: ${AI_EMBEDDING_TRANSFORMER_ONNX:https://huggingface.co/intfloat/e5-small-v2/resolve/main/model.onnx}
         tokenizer:
-          uri: https://huggingface.co/intfloat/e5-small-v2/raw/main/tokenizer.json
+          uri: ${AI_EMBEDDING_TRANSFORMER_TOKENIZER:https://huggingface.co/intfloat/e5-small-v2/raw/main/tokenizer.json}
     vectorstore:
-      # todo: store externally
       milvus:
         client:
-          host: "localhost"
-          port: 19530
-          username: "root"
-          password: "milvus"
-        databaseName: "default"
-        collectionName: "vector_store"
-        embeddingDimension: 384
+          host: ${MILVUS_HOST}
+          port: ${MILVUS_PORT}
+          username: ${MILVUS_USERNAME}
+          password: ${MILVUS_PASSWORD}
+        databaseName: ${MILVUS_DBNAME}
+        collectionName: ${MILVUS_COLLECTION_NAME}
+        embeddingDimension: ${MILVUS_EMBEDDING_DIMENSION}
         indexType: IVF_FLAT
         metricType: COSINE
         initialize-schema: true
+      topk-retrieve-default-size: ${VECTORSTORE_TOPK_RETRIEVE_DEFAULT_SIZE:5}
+      similarity-threshold: ${VECTORSTORE_SIMILARITY_THRESHOLD:0.0}
 server:
-  port: 8080
+  port: ${SERVER_PORT}
+  executor:
+    virtual-threads-enabled: ${VIRTUAL_THREADS_ENABLED:true}
+    thread-pool-size: ${THREAD_POOL_SIZE:10}
 
